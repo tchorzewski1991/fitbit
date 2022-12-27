@@ -1,7 +1,7 @@
 APP=fitledger
 
 build:
-	@go build -o $(APP) .
+	@go build -o $(APP) -ldflags '-X main.build=local' .
 
 run:
 	@go run main.go
