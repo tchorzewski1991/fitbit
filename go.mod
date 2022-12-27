@@ -1,4 +1,4 @@
-module github.com/tchorzewski1991/fitledger
+module github.com/tchorzewski1991/fitbit
 
 go 1.19
 

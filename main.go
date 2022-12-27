@@ -6,12 +6,12 @@ import (
 	"os"
 
 	"github.com/ardanlabs/conf/v3"
-	"github.com/tchorzewski1991/fitledger/core/logger"
+	"github.com/tchorzewski1991/fitbit/core/logger"
 	"go.uber.org/zap"
 )
 
 const (
-	service = "fit-ledger"
+	service = "fitbit"
 	prefix  = "NODE"
 )
 

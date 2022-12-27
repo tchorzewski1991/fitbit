@@ -1,4 +1,4 @@
-APP=fitledger
+APP=fitbit
 
 build:
 	@go build -o $(APP) -ldflags '-X main.build=local' .
