@@ -1,12 +1,63 @@
+run:
+  timeout: 1m
+
 linters:
   disable-all: true
   enable:
-    - gofmt # Gofmt checks whether code was formatted according to general format guidelines.
-    - govet # Vet examines Go source code and reports suspicious constructs.
+    - gofmt         # Gofmt checks whether code was formatted according to general format guidelines.
+    - govet         # Vet examines Go source code and reports suspicious constructs.
+    - errcheck      # Errcheck is a program for checking for unchecked errors in Go programs.
+    - gosimple      # Linter for Go source code that specializes in simplifying code.
+    - ineffassign   # Detects when assignments to existing variables are not used.
+    - staticcheck   # -
+    - typecheck     # Like the front-end of a Go compiler, parses and type-checks Go code.
+    - unused        # Checks Go code for unused constants, variables, functions and types.
+    - asciicheck    # Simple linter to check that your code does not contain non-ASCII identifiers.
+    - bodyclose     # Checks whether HTTP response body is closed successfully.
+    - contextcheck  # Check whether the function uses a non-inherited context.
+    - decorder      # Check declaration order and count of types, constants, variables and functions.
+    - dogsled       # Checks assignments with too many blank identifiers.
+    - dupword       # Checks for duplicate words in the source code.
+    - errname       # Checks that sentinel errors are prefixed with the Err.
+    - errorlint     # Checks the code that can be problematic according to the err wrapping scheme introduced Go 1.13.
+    - exportloopref # Checks for pointers to enclosing loop variables
+    - gci           # Gci controls golang package import order and makes it always deterministic.
+    - gocognit      # Computes and checks the cognitive complexity of functions
+    - goconst       # Finds repeated strings that could be replaced by a constant.
+    - godot         # Check if comments end in a period.
+    - goimports     # In addition to fixing imports, goimports also formats your code in the same style as gofmt.
+    - gosec         # Inspects source code for security problems.
+    - maintidx      # Measures the maintainability index of each function.
+    - nilerr        # Finds the code that returns nil even if it checks that the error is not nil.
+    - unconvert     # Remove unnecessary type conversions
+    - unparam       # Reports unused function parameters
+    - testpackage   # Checks the usage of a separate _test package.
+
+linters-settings:
+  gofmt:
+    # Type any has been introduced in Go 1.18, and it's a bit more readable than interface{}.
+    rewrite-rules:
+      - pattern: 'interface{}'
+        replacement: 'any'
+
+  decorder:
+    # We want to have consistent order of declarations: consts -> types -> variables -> functions
+    dec-order:
+      - const
+      - type
+      - var
+      - func
+    disable-dec-order-check: false
+    # Init function should be visible and easily accessible.
+    disable-init-func-first-check: false
+
+  goconst:
+    # Using repeated strings is tests is just fine.
+    ignore-tests: true
 
 issues:
   # Fix found issues (if it's supported by the linter).
-  # In our case: gofmt.
+  # In our case: gofmt, dupword, godot, goimports, unconvert.
   fix: true
 
   # Maximum issues count per one linter.
@@ -18,3 +69,14 @@ issues:
   # Set to 0 to disable.
   # Default: 3
   max-same-issues: 0
+
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - decorder # Specific declarations order in tests is not needed
+        - dupl     # A bit of duplications in tests shouldn't be a problem
+        - errname  # It is common to name variables of type error like 'expectedErr' in tests
+    - path: main\.go
+      linters:
+        - maintidx # Due to the design decisions our main.go, and it's maintainability always will be low
