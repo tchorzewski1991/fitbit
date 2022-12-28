@@ -1,10 +1,10 @@
 APP=fitbit
 
 build:
-	@go build -o $(APP) -ldflags '-X main.build=local' .
+	@go build -o $(APP) -ldflags '-X main.build=local' ./app/services/node/main.go
 
 run:
-	@go run main.go
+	@go run ./app/services/node/main.go
 
 tidy:
 	@go mod tidy
