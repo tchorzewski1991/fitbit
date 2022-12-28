@@ -35,13 +35,22 @@ func run(log *zap.SugaredLogger) error {
 
 	// ========================================================================
 	// Configuration
+
 	cfg := struct {
 		conf.Version
+		Api struct {
+			Host            string        `conf:"default:0.0.0.0:3000"`
+			ReadTimeout     time.Duration `conf:"default:5s"`
+			WriteTimeout    time.Duration `conf:"default:5s"`
+			IdleTimeout     time.Duration `conf:"default:5s"`
+			ShutdownTimeout time.Duration `conf:"default:5s"`
+		}
 	}{
 		Version: conf.Version{
 			Build: build,
 		},
 	}
+
 	help, err := conf.Parse(prefix, &cfg)
 	if err != nil {
 		if errors.Is(err, conf.ErrHelpWanted) {
@@ -50,11 +59,6 @@ func run(log *zap.SugaredLogger) error {
 		}
 		return fmt.Errorf("parsing config err: %w", err)
 	}
-	// ========================================================================
-	// Starting app
-
-	log.Infow("service start")
-	defer log.Infow("service end")
 
 	out, err := conf.String(&cfg)
 	if err != nil {
