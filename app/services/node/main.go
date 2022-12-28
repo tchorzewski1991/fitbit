@@ -1,9 +1,14 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"github.com/ardanlabs/conf/v3"
 	"github.com/tchorzewski1991/fitbit/core/logger"
@@ -65,6 +70,46 @@ func run(log *zap.SugaredLogger) error {
 		return fmt.Errorf("generating config output err: %w", err)
 	}
 	log.Infow("config parsed", "config", out)
+
+	// ========================================================================
+	// Starting node API
+
+	api := http.Server{
+		Addr:         cfg.Api.Host,
+		Handler:      nil,
+		ReadTimeout:  cfg.Api.ReadTimeout,
+		WriteTimeout: cfg.Api.WriteTimeout,
+		IdleTimeout:  cfg.Api.IdleTimeout,
+	}
+
+	errorCh := make(chan error, 1)
+	shutdownCh := make(chan os.Signal, 1)
+	signal.Notify(shutdownCh, syscall.SIGTERM, syscall.SIGINT)
+
+	go func() {
+		log.Infow("starting node")
+		defer log.Infow("node stopped")
+
+		if err = api.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			errorCh <- err
+		}
+	}()
+
+	select {
+	case sig := <-shutdownCh:
+		log.Infow("starting shutdown", "signal", sig)
+		defer log.Infow("shutdown complete", "signal", sig)
+
+		ctx, cancel := context.WithTimeout(context.Background(), cfg.Api.ShutdownTimeout)
+		defer cancel()
+
+		if err = api.Shutdown(ctx); err != nil {
+			_ = api.Close()
+			return fmt.Errorf("cannot shutdown node gracefully: %w", err)
+		}
+	case err = <-errorCh:
+		return fmt.Errorf("node err: %w", err)
+	}
 
 	return nil
 }
