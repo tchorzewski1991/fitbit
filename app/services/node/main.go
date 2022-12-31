@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/ardanlabs/conf/v3"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/genesis"
 	"github.com/tchorzewski1991/fitbit/core/logger"
 	"go.uber.org/zap"
 )
@@ -70,6 +71,14 @@ func run(log *zap.SugaredLogger) error {
 		return fmt.Errorf("generating config output err: %w", err)
 	}
 	log.Infow("config parsed", "config", out)
+
+	// ========================================================================
+	// Setup blockchain components
+
+	_, err = genesis.Load()
+	if err != nil {
+		return fmt.Errorf("loading genesis file err: %w", err)
+	}
 
 	// ========================================================================
 	// Starting node API
