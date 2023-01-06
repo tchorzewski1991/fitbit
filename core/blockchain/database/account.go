@@ -14,15 +14,26 @@ type Account struct {
 
 type Accounts map[AccountID]Account
 
+// ToAccountID is a constructor for a new AccountID.
+// This function takes hex encoded string and verifies whether its underlying
+// value conforms to the AccountID format requirements.
 func ToAccountID(hexID string) (AccountID, error) {
-	if err := validate(hexID); err != nil {
+	if err := verify(hexID); err != nil {
 		return "", err
 	}
 	return AccountID(hexID), nil
 }
 
-// validate checks the format of AccountID (TODO).
-func validate(hexID string) error {
+// Verify ensures the underlying value conforms to the AccountID format requirements.
+func (id AccountID) Verify() error {
+	if err := verify(string(id)); err != nil {
+		return err
+	}
+	return nil
+}
+
+// verify ensures the format of given hex ID conforms to the requirements of AccountID format.
+func verify(hexID string) error {
 	if !has0xPrefix(hexID) {
 		return errors.New("invalid account ID format: 0x prefix not found")
 	}

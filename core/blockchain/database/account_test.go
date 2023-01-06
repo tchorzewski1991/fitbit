@@ -30,3 +30,15 @@ func TestToAccountID(t *testing.T) {
 	_, err = database.ToAccountID(hexID)
 	assert.Error(t, err, "invalid account ID format: invalid char found")
 }
+
+func TestAccountID_Verify(t *testing.T) {
+	hexID := "0x0ee5ba68586c85880B0900D0dEe0eEcBB37010e0"
+	accountID := database.AccountID(hexID)
+	err := accountID.Verify()
+	assert.Nil(t, err)
+
+	hexID = "0ee5ba68586c85880B0900D0dEe0eEcBB37010e0"
+	accountID = database.AccountID(hexID)
+	err = accountID.Verify()
+	assert.Error(t, err, "invalid account ID format: 0x prefix not found")
+}
