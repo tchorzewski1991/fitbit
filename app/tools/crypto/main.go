@@ -51,7 +51,7 @@ func main() {
 	// We want to 'stamp' our data to make sure it is our system that has produced the hash
 	stamp := []byte("\x19Fitbit Signed Message:\n32")
 
-	// Hash tx bytes with Keccak256 hash function to the fixed size 32 bytes array
+	// Hash tx bytes with Keccak256 hash function to the fixed 32 bytes array
 	txHash := crypto.Keccak256(stamp, txData)
 
 	// Sign hashed tx with the private key in order to produce tx signature
