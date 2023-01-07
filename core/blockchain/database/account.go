@@ -34,6 +34,9 @@ func (id AccountID) Verify() error {
 
 // verify ensures the format of given hex ID conforms to the requirements of AccountID format.
 func verify(hexID string) error {
+	if len(hexID) == 0 {
+		return errors.New("invalid account ID format: value is empty")
+	}
 	if !has0xPrefix(hexID) {
 		return errors.New("invalid account ID format: 0x prefix not found")
 	}

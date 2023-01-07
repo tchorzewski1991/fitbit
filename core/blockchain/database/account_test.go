@@ -15,6 +15,11 @@ func TestToAccountID(t *testing.T) {
 	expectedAccountID := database.AccountID(hexID)
 	assert.Equal(t, accountID, expectedAccountID)
 
+	// Ensures hexID is not empty
+	hexID = ""
+	_, err = database.ToAccountID(hexID)
+	assert.EqualError(t, err, "invalid account ID format: value is empty")
+
 	// Ensures hexID contains 0x prefix
 	hexID = "0ee5ba68586c85880B0900D0dEe0eEcBB37010e0"
 	_, err = database.ToAccountID(hexID)
