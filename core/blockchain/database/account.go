@@ -1,6 +1,10 @@
 package database
 
-import "errors"
+import (
+	"crypto/ecdsa"
+	"errors"
+	"github.com/ethereum/go-ethereum/crypto"
+)
 
 const addressLength = 20
 
@@ -15,13 +19,19 @@ type Account struct {
 }
 
 // ToAccountID is a constructor for a new AccountID.
-// This function takes hex encoded string and verifies whether its underlying
-// value conforms to the AccountID format requirements.
+// This function takes hex encoded string and verifies whether its
+// underlying value conforms to the AccountID format requirements.
 func ToAccountID(hexID string) (AccountID, error) {
 	if err := verify(hexID); err != nil {
 		return "", err
 	}
 	return AccountID(hexID), nil
+}
+
+// PubToAccountID is a constructor for a new AccountID.
+// This function takes ECDSA public key and converts it to AccountID.
+func PubToAccountID(pub *ecdsa.PublicKey) AccountID {
+	return AccountID(crypto.PubkeyToAddress(*pub).String())
 }
 
 // Verify ensures the underlying value conforms to the AccountID format requirements.
