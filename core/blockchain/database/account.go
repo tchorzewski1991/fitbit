@@ -6,13 +6,13 @@ const addressLength = 20
 
 type AccountID string
 
+type Accounts map[AccountID]Account
+
 type Account struct {
 	ID      AccountID
 	Nonce   uint64
 	Balance uint64
 }
-
-type Accounts map[AccountID]Account
 
 // ToAccountID is a constructor for a new AccountID.
 // This function takes hex encoded string and verifies whether its underlying
