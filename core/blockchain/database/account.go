@@ -42,6 +42,10 @@ func (id AccountID) Verify() error {
 	return nil
 }
 
+func (id AccountID) String() string {
+	return string(id)
+}
+
 // verify ensures the format of given hex ID conforms to the requirements of AccountID format.
 func verify(hexID string) error {
 	if len(hexID) == 0 {
