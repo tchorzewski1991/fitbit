@@ -3,6 +3,7 @@ package database
 import (
 	"crypto/ecdsa"
 	"errors"
+
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
@@ -30,8 +31,8 @@ func ToAccountID(hexID string) (AccountID, error) {
 
 // PubToAccountID is a constructor for a new AccountID.
 // This function takes ECDSA public key and converts it to AccountID.
-func PubToAccountID(pub *ecdsa.PublicKey) AccountID {
-	return AccountID(crypto.PubkeyToAddress(*pub).String())
+func PubToAccountID(pub ecdsa.PublicKey) (AccountID, error) {
+	return ToAccountID(crypto.PubkeyToAddress(pub).String())
 }
 
 // Verify ensures the underlying value conforms to the AccountID format requirements.
