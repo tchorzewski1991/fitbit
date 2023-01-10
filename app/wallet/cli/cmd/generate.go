@@ -3,11 +3,12 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/spf13/cobra"
 	"os"
 	"path"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/spf13/cobra"
 )
 
 const (
@@ -20,6 +21,12 @@ var (
 	accountName string
 	accountPath string
 )
+
+var generateCmd = &cobra.Command{
+	Use:   "generate",
+	Short: "Generates new private key for the account",
+	Run:   generateRun,
+}
 
 func init() {
 	generateCmd.Flags().StringVarP(
@@ -35,12 +42,6 @@ func init() {
 		"The path to the account private key.",
 	)
 	rootCmd.AddCommand(generateCmd)
-}
-
-var generateCmd = &cobra.Command{
-	Use:   "generate",
-	Short: "Generates new private key for the account",
-	Run:   generateRun,
 }
 
 func generateRun(_ *cobra.Command, _ []string) {
