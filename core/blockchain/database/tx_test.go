@@ -1,26 +1,26 @@
 package database_test
 
 import (
-	"crypto/ecdsa"
-	"github.com/ethereum/go-ethereum/crypto"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
-	"testing"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/testdata"
 )
 
 const defaultChainID = uint64(1)
 
 func TestTx_SignAndVerify(t *testing.T) {
-	priv := loadPrivateKey(t)
+	priv := testdata.LoadPrivateKey(t)
 	params := defaultTxParams(t)
 
 	// Build and sign valid tx with nil private key
 	tx := buildTx(&params)
-	signedTx, err := tx.Sign(nil)
-	assert.EqualError(t, err, "failed to sign tx: private key is mandatory")
+	_, err := tx.Sign(nil)
+	assert.EqualError(t, err, "tx sign err: signature sign err: private key is mandatory")
 
 	// Build and sign valid tx with proper private key
-	signedTx, err = tx.Sign(priv)
+	signedTx, err := tx.Sign(priv)
 	assert.Nil(t, err)
 
 	// Verify signed tx with default chain ID
@@ -29,7 +29,7 @@ func TestTx_SignAndVerify(t *testing.T) {
 }
 
 func TestTx_SignAndVerifyChainID(t *testing.T) {
-	priv := loadPrivateKey(t)
+	priv := testdata.LoadPrivateKey(t)
 	params := defaultTxParams(t)
 
 	// Build and sign tx with default chain ID
@@ -43,7 +43,7 @@ func TestTx_SignAndVerifyChainID(t *testing.T) {
 }
 
 func TestTx_SignAndVerifyFrom(t *testing.T) {
-	priv := loadPrivateKey(t)
+	priv := testdata.LoadPrivateKey(t)
 	params := defaultTxParams(t)
 
 	// Build and sign tx with empty from address
@@ -58,7 +58,7 @@ func TestTx_SignAndVerifyFrom(t *testing.T) {
 }
 
 func TestTx_SignAndVerifyTo(t *testing.T) {
-	priv := loadPrivateKey(t)
+	priv := testdata.LoadPrivateKey(t)
 	params := defaultTxParams(t)
 
 	// Build and sign tx with empty to address
@@ -73,7 +73,7 @@ func TestTx_SignAndVerifyTo(t *testing.T) {
 }
 
 func TestTx_SignAndVerifyFromToEqual(t *testing.T) {
-	priv := loadPrivateKey(t)
+	priv := testdata.LoadPrivateKey(t)
 	params := defaultTxParams(t)
 
 	// Build and sign tx with from address the same as to address
@@ -88,7 +88,7 @@ func TestTx_SignAndVerifyFromToEqual(t *testing.T) {
 }
 
 func TestTx_SignAndVerifySignatureAddress(t *testing.T) {
-	priv := loadPrivateKey(t)
+	priv := testdata.LoadPrivateKey(t)
 	params := defaultTxParams(t)
 
 	// Build and sign tx
@@ -128,14 +128,6 @@ func buildTx(params *txParams) database.Tx {
 		Tip:     10,
 		Data:    nil,
 	}
-}
-
-func loadPrivateKey(t *testing.T) *ecdsa.PrivateKey {
-	priv, err := crypto.LoadECDSA("testdata/test.ecdsa")
-	if err != nil {
-		t.Fatal(err)
-	}
-	return priv
 }
 
 func loadAccountID(t *testing.T, hexID string) database.AccountID {

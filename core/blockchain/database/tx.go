@@ -26,7 +26,7 @@ func (tx Tx) Sign(pk *ecdsa.PrivateKey) (SignedTx, error) {
 	// Sign tx with given private key
 	r, s, v, err := signature.Sign(tx, pk)
 	if err != nil {
-		return SignedTx{}, fmt.Errorf("failed to sign tx: %w", err)
+		return SignedTx{}, fmt.Errorf("tx sign err: %w", err)
 	}
 
 	return SignedTx{
