@@ -80,3 +80,6 @@ issues:
     - path: main\.go
       linters:
         - maintidx # Due to the design decisions our main.go, and it's maintainability always will be low
+    - path: tx\.go
+      linters:
+        - decorder # Specific declarations order in tests is not needed
