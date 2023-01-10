@@ -15,7 +15,6 @@ linters:
     - asciicheck    # Simple linter to check that your code does not contain non-ASCII identifiers.
     - bodyclose     # Checks whether HTTP response body is closed successfully.
     - contextcheck  # Check whether the function uses a non-inherited context.
-    - decorder      # Check declaration order and count of types, constants, variables and functions.
     - dogsled       # Checks assignments with too many blank identifiers.
     - dupword       # Checks for duplicate words in the source code.
     - errname       # Checks that sentinel errors are prefixed with the Err.
@@ -39,17 +38,6 @@ linters-settings:
     rewrite-rules:
       - pattern: 'interface{}'
         replacement: 'any'
-
-  decorder:
-    # We want to have consistent order of declarations: consts -> types -> variables -> functions
-    dec-order:
-      - const
-      - type
-      - var
-      - func
-    disable-dec-order-check: false
-    # Init function should be visible and easily accessible.
-    disable-init-func-first-check: false
 
   goconst:
     # Using repeated strings is tests is just fine.
@@ -80,6 +68,3 @@ issues:
     - path: main\.go
       linters:
         - maintidx # Due to the design decisions our main.go, and it's maintainability always will be low
-    - path: tx\.go
-      linters:
-        - decorder # Specific declarations order in tests is not needed
