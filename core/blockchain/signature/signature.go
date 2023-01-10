@@ -86,14 +86,14 @@ func Verify(r, s, v *big.Int) error {
 	return nil
 }
 
-// RecoverPubkey takes any value and r, s, v signature representation and tries to recover
-// public key associated with that signature.
-func RecoverPubkey(value any, r, s, v *big.Int) (*ecdsa.PublicKey, error) {
+// RecoverAddress takes any value and r, s, v signature representation and recovers
+// Etherium account address associated with that signature.
+func RecoverAddress(value any, r, s, v *big.Int) (common.Address, error) {
 
 	// Marshal value to the raw bytes (we need this for Keccak256 hash function).
 	data, err := json.Marshal(value)
 	if err != nil {
-		return nil, fmt.Errorf("recover pubkey err: %w", err)
+		return common.Address{}, fmt.Errorf("recover pubkey err: %w", err)
 	}
 
 	// We want to stamp our data to make sure it is our system that has produced the hash.
@@ -105,20 +105,16 @@ func RecoverPubkey(value any, r, s, v *big.Int) (*ecdsa.PublicKey, error) {
 	// Convert r, s, v signature format to the []byte signature representation.
 	sig, err := ToBytes(r, s, v)
 	if err != nil {
-		return nil, fmt.Errorf("recover pubkey err: %w", err)
+		return common.Address{}, fmt.Errorf("recover pubkey err: %w", err)
 	}
 
 	// Extract public key associated with the hash and the signature.
 	pub, err := crypto.SigToPub(hash, sig)
 	if err != nil {
-		return nil, fmt.Errorf("recover pubkey err: %w", err)
+		return common.Address{}, fmt.Errorf("recover pubkey err: %w", err)
 	}
 
-	return pub, err
-}
-
-func RecoverAddress(pub ecdsa.PublicKey) common.Address {
-	return crypto.PubkeyToAddress(pub)
+	return crypto.PubkeyToAddress(*pub), err
 }
 
 // Hash returns unique representation of the value.

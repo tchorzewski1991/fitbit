@@ -49,11 +49,8 @@ func TestSigning(t *testing.T) {
 	assert.Nil(t, err)
 
 	// Recover public key from data and r, s, v signature
-	pub, err := signature.RecoverPubkey(data, r, s, v)
+	addr, err := signature.RecoverAddress(data, r, s, v)
 	assert.Nil(t, err)
-
-	// Recover address from public key
-	addr := signature.RecoverAddress(*pub)
 
 	// Match expected address with one extracted from public key
 	assert.Equal(t, from, addr.String())

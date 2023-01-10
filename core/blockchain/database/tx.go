@@ -1,12 +1,15 @@
 package database
 
 import (
+	"bytes"
 	"crypto/ecdsa"
 	"errors"
 	"fmt"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/signature"
 	"math/big"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/signature"
 )
 
 // Tx represents transactional change between two accounts.
@@ -66,16 +69,15 @@ func (tx SignedTx) Verify(chainID uint64) error {
 		return fmt.Errorf("cannot send from: %s to: %s", tx.From, tx.To)
 	}
 
-	pub, err := signature.RecoverPubkey(tx.Tx, tx.R, tx.S, tx.V)
+	addr, err := signature.RecoverAddress(tx.Tx, tx.R, tx.S, tx.V)
 	if err != nil {
 		return errors.New("cannot recover address from signature")
 	}
 
-	txFrom := tx.From
-	signatureAddress := PubToAccountID(pub)
+	from, _ := ToAccountID(addr.String())
 
-	if txFrom != signatureAddress {
-		return fmt.Errorf("tx from: %s does not match signature address: %s", txFrom, signatureAddress)
+	if tx.From != from {
+		return fmt.Errorf("tx from: %s does not match signature address: %s", tx.From, from)
 	}
 
 	return nil
