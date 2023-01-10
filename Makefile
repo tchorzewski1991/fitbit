@@ -22,3 +22,12 @@ clean:
 
 lint:
 	@golangci-lint run -v -c golangci.yaml
+
+wallet:
+	@go run ./app/wallet/cli/main.go --help
+
+wallet-version:
+	@go run ./app/wallet/cli/main.go version
+
+wallet-generate:
+	@go run ./app/wallet/cli/main.go generate
