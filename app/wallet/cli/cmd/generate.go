@@ -1,11 +1,8 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"path"
-	"strings"
 
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/spf13/cobra"
@@ -15,11 +12,6 @@ const (
 	defaultAccountName = "private.ecdsa"
 	defaultAccountPath = "data/accounts"
 	keyExtension       = ".ecdsa"
-)
-
-var (
-	accountName string
-	accountPath string
 )
 
 var generateCmd = &cobra.Command{
@@ -62,26 +54,4 @@ func generateRun(_ *cobra.Command, _ []string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-func generateAccountLocation() (string, error) {
-
-	if strings.TrimSpace(accountName) == "" {
-		return "", errors.New("account-name cannot be empty")
-	}
-
-	if strings.TrimSpace(accountPath) == "" {
-		return "", errors.New("account-path cannot be empty")
-	}
-
-	if !strings.HasSuffix(accountName, keyExtension) {
-		accountName += keyExtension
-	}
-
-	err := os.MkdirAll(accountPath, 0750)
-	if err != nil {
-		return "", err
-	}
-
-	return path.Join(accountPath, accountName), nil
 }
