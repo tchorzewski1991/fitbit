@@ -16,6 +16,7 @@ import (
 // ZeroHash represents a hash code of zeros.
 const ZeroHash string = "0x0000000000000000000000000000000000000000000000000000000000000000"
 
+// fitbitID represents the unique value added to every v value of the ECDSA signature.
 const fitbitID = 23
 
 // Sign signs any value using given private key.
@@ -132,6 +133,7 @@ func Hash(value any) string {
 	return hexutil.Encode(hash[:])
 }
 
+// ToBytes takes r, s, v signature format and converts it to the []byte format.
 func ToBytes(r, s, v *big.Int) ([]byte, error) {
 	if r == nil || s == nil || v == nil {
 		return nil, errors.New("cannot convert signature to bytes")
@@ -152,6 +154,7 @@ func ToBytes(r, s, v *big.Int) ([]byte, error) {
 	return sig, nil
 }
 
+// FromBytes takes signature in []byte format and converts it to r, s, v format.
 func FromBytes(sig []byte) (r, s, v *big.Int, err error) {
 	if len(sig) < 64 {
 		return nil, nil, nil, errors.New("cannot convert signature to r, s, v")
