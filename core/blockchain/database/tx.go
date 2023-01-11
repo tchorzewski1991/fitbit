@@ -91,7 +91,7 @@ type BlockTx struct {
 	GasUnits  uint64 `json:"gas_units"`
 }
 
-// NewBlockTx constructs a new block transaction.
+// NewBlockTx constructs a new block Tx.
 func NewBlockTx(tx SignedTx, gasPrice, gasUnits uint64) BlockTx {
 	return BlockTx{
 		SignedTx:  tx,

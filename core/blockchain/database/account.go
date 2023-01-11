@@ -19,7 +19,7 @@ type Account struct {
 	Balance uint64
 }
 
-// ToAccountID is a constructor for a new AccountID.
+// ToAccountID constructs a new AccountID.
 // This function takes hex encoded string and verifies whether its
 // underlying value conforms to the AccountID format requirements.
 func ToAccountID(hexID string) (AccountID, error) {
@@ -29,7 +29,7 @@ func ToAccountID(hexID string) (AccountID, error) {
 	return AccountID(hexID), nil
 }
 
-// PubToAccountID is a constructor for a new AccountID.
+// PubToAccountID constructs a new AccountID.
 // This function takes ECDSA public key and converts it to AccountID.
 func PubToAccountID(pub ecdsa.PublicKey) (AccountID, error) {
 	return ToAccountID(crypto.PubkeyToAddress(pub).String())
