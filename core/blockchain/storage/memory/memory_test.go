@@ -1,10 +1,11 @@
 package memory_test
 
 import (
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/storage/memory"
-	"testing"
 )
 
 func TestMemory(t *testing.T) {

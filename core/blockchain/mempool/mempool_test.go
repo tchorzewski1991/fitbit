@@ -2,11 +2,12 @@ package mempool_test
 
 import (
 	"crypto/ecdsa"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/mempool"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/testdata"
-	"testing"
 )
 
 func TestMempool(t *testing.T) {

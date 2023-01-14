@@ -2,8 +2,9 @@ package mempool
 
 import (
 	"fmt"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"sync"
+
+	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 )
 
 // Mempool represents the cache for waiting transactions.
@@ -66,7 +67,7 @@ func (m *Mempool) Get() []database.BlockTx {
 	return txs
 }
 
-// Truncate deletes all transactions from Mempool
+// Truncate deletes all transactions from Mempool.
 func (m *Mempool) Truncate() {
 	m.mu.Lock()
 	defer m.mu.Unlock()

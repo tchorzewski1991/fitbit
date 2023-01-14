@@ -2,8 +2,9 @@ package memory
 
 import (
 	"fmt"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"sync"
+
+	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 )
 
 // Memory represents the database.Storage implementation we can use
