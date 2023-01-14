@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/ardanlabs/conf/v3"
+	"github.com/tchorzewski1991/fitbit/app/services/node/handlers"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/genesis"
 	"github.com/tchorzewski1991/fitbit/core/logger"
 	"go.uber.org/zap"
@@ -44,8 +45,8 @@ func run(log *zap.SugaredLogger) error {
 
 	cfg := struct {
 		conf.Version
-		Api struct {
-			Host            string        `conf:"default:0.0.0.0:3000"`
+		Node struct {
+			PublicHost      string        `conf:"default:0.0.0.0:3000"`
 			ReadTimeout     time.Duration `conf:"default:5s"`
 			WriteTimeout    time.Duration `conf:"default:5s"`
 			IdleTimeout     time.Duration `conf:"default:5s"`
@@ -81,42 +82,47 @@ func run(log *zap.SugaredLogger) error {
 	}
 
 	// ========================================================================
-	// Starting node API
+	// Starting public node
 
-	api := http.Server{
-		Addr:         cfg.Api.Host,
-		Handler:      nil,
-		ReadTimeout:  cfg.Api.ReadTimeout,
-		WriteTimeout: cfg.Api.WriteTimeout,
-		IdleTimeout:  cfg.Api.IdleTimeout,
+	nodeErrors := make(chan error, 1)
+	nodeShutdown := make(chan os.Signal, 1)
+	signal.Notify(nodeShutdown, syscall.SIGTERM, syscall.SIGINT)
+
+	publicMux := handlers.PublicMux(handlers.Config{
+		Log: log,
+	})
+
+	publicNode := http.Server{
+		Addr:         cfg.Node.PublicHost,
+		Handler:      publicMux,
+		ReadTimeout:  cfg.Node.ReadTimeout,
+		WriteTimeout: cfg.Node.WriteTimeout,
+		IdleTimeout:  cfg.Node.IdleTimeout,
 	}
 
-	errorCh := make(chan error, 1)
-	shutdownCh := make(chan os.Signal, 1)
-	signal.Notify(shutdownCh, syscall.SIGTERM, syscall.SIGINT)
-
 	go func() {
-		log.Infow("starting node")
-		defer log.Infow("node stopped")
+		log.Infow("starting public node", "host", publicNode.Addr)
+		defer log.Infow("public node stopped")
 
-		if err = api.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			errorCh <- err
+		if err = publicNode.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			nodeErrors <- err
 		}
 	}()
 
 	select {
-	case sig := <-shutdownCh:
+	case sig := <-nodeShutdown:
 		log.Infow("starting shutdown", "signal", sig)
 		defer log.Infow("shutdown complete", "signal", sig)
 
-		ctx, cancel := context.WithTimeout(context.Background(), cfg.Api.ShutdownTimeout)
-		defer cancel()
+		ctx, cancelPub := context.WithTimeout(context.Background(), cfg.Node.ShutdownTimeout)
+		defer cancelPub()
 
-		if err = api.Shutdown(ctx); err != nil {
-			_ = api.Close()
-			return fmt.Errorf("cannot shutdown node gracefully: %w", err)
+		log.Infow("shutting down public node")
+		if err = publicNode.Shutdown(ctx); err != nil {
+			_ = publicNode.Close()
+			return fmt.Errorf("cannot shutdown public node gracefully: %w", err)
 		}
-	case err = <-errorCh:
+	case err = <-nodeErrors:
 		return fmt.Errorf("node err: %w", err)
 	}
 
