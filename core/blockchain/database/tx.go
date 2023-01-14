@@ -100,3 +100,25 @@ func NewBlockTx(tx SignedTx, gasPrice, gasUnits uint64) BlockTx {
 		GasUnits:  gasUnits,
 	}
 }
+
+func (tx BlockTx) Hash() ([]byte, error) {
+	hash := signature.Hash(tx)
+	return hexutil.Decode(hash)
+}
+
+func (tx BlockTx) Equals(other BlockTx) bool {
+	if tx.Nonce != other.Nonce {
+		return false
+	}
+
+	txBs, err := signature.ToBytes(tx.R, tx.S, tx.V)
+	if err != nil {
+		return false
+	}
+	otherBs, err := signature.ToBytes(other.R, other.S, other.V)
+	if err != nil {
+		return false
+	}
+
+	return bytes.Equal(txBs, otherBs)
+}
