@@ -8,7 +8,7 @@ import (
 	"github.com/tchorzewski1991/fitbit/core/blockchain/testdata"
 )
 
-const defaultChainID = uint64(1)
+const defaultChainID = uint16(1)
 
 func TestTx_SignAndVerify(t *testing.T) {
 	priv := testdata.LoadPrivateKey(t)
@@ -39,7 +39,7 @@ func TestTx_SignAndVerifyChainID(t *testing.T) {
 
 	// Verify signed tx with other chain ID
 	err = signedTx.Verify(2)
-	assert.EqualError(t, err, "chain ID: 2 is not valid")
+	assert.EqualError(t, err, "tx chain ID: 1 is not valid")
 }
 
 func TestTx_SignAndVerifyFrom(t *testing.T) {
@@ -105,7 +105,7 @@ func TestTx_SignAndVerifySignatureAddress(t *testing.T) {
 // Helper functions
 
 type txParams struct {
-	chainID uint64
+	chainID uint16
 	from    database.AccountID
 	to      database.AccountID
 }

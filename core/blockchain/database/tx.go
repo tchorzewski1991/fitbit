@@ -14,7 +14,7 @@ import (
 
 // Tx represents transactional change between two accounts.
 type Tx struct {
-	ChainID uint64    `json:"chain_id"`
+	ChainID uint16    `json:"chain_id"`
 	Nonce   uint64    `json:"nonce"`
 	From    AccountID `json:"from"`
 	To      AccountID `json:"to"`
@@ -51,10 +51,10 @@ type SignedTx struct {
 }
 
 // Verify checks whether the transaction has a proper signature.
-func (tx SignedTx) Verify(chainID uint64) error {
+func (tx SignedTx) Verify(chainID uint16) error {
 
 	if tx.ChainID != chainID {
-		return fmt.Errorf("chain ID: %d is not valid", chainID)
+		return fmt.Errorf("tx chain ID: %d is not valid", tx.ChainID)
 	}
 
 	if err := tx.From.Verify(); err != nil {
