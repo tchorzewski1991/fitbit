@@ -82,7 +82,22 @@ func run(log *zap.SugaredLogger) error {
 	// ========================================================================
 	// Setup blockchain components
 
-	_, err = genesis.Load()
+	// Prepare beneficiary private key location
+	beneficiaryPrivLocation := fmt.Sprintf("%s/%s.ecdsa", cfg.State.AccountsPath, cfg.State.Beneficiary)
+
+	// Load beneficiary private key
+	priv, err := crypto.LoadECDSA(beneficiaryPrivLocation)
+	if err != nil {
+		return fmt.Errorf("loading beneficiary private key err: %w", err)
+	}
+
+	// Build beneficiary address out of private - public key pair
+	beneficiaryID, err := database.PubToAccountID(priv.PublicKey)
+	if err != nil {
+		return fmt.Errorf("loading beneficiary account ID err: %w", err)
+	}
+
+	gen, err := genesis.Load()
 	if err != nil {
 		return fmt.Errorf("loading genesis file err: %w", err)
 	}
