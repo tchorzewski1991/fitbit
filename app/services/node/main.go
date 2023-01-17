@@ -53,6 +53,11 @@ func run(log *zap.SugaredLogger) error {
 			IdleTimeout     time.Duration `conf:"default:5s"`
 			ShutdownTimeout time.Duration `conf:"default:5s"`
 		}
+		State struct {
+			AccountsPath string `conf:"default:data/accounts"`
+			DataPath     string `conf:"default:data/miner"`
+			Beneficiary  string `conf:"default:test"`
+		}
 	}{
 		Version: conf.Version{
 			Build: build,
