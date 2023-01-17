@@ -47,6 +47,7 @@ func run(log *zap.SugaredLogger) error {
 		conf.Version
 		Node struct {
 			PublicHost      string        `conf:"default:0.0.0.0:3000"`
+			PrivateHost     string        `conf:"default:0.0.0.0:4000"`
 			ReadTimeout     time.Duration `conf:"default:5s"`
 			WriteTimeout    time.Duration `conf:"default:5s"`
 			IdleTimeout     time.Duration `conf:"default:5s"`
