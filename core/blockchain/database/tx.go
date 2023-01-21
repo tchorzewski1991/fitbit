@@ -83,6 +83,15 @@ func (tx SignedTx) Verify(chainID uint16) error {
 	return nil
 }
 
+// Signature converts signed transaction to the 0x prefixed hex encoded format.
+func (tx SignedTx) Signature() string {
+	bs, err := signature.ToBytesWithFitbitID(tx.R, tx.S, tx.V)
+	if err != nil {
+		panic(err)
+	}
+	return hexutil.Encode(bs)
+}
+
 // BlockTx represents transaction that will be saved to the blockchain.
 type BlockTx struct {
 	SignedTx
