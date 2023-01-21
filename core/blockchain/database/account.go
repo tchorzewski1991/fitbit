@@ -56,7 +56,7 @@ func verify(hexID string) error {
 		return errors.New("invalid account ID format: 0x prefix not found")
 	}
 	if !hasProperLen(hexID[2:]) {
-		return errors.New("invalid account ID format: length is too small")
+		return errors.New("invalid account ID format: invalid length")
 	}
 	if !hasProperChars(hexID[2:]) {
 		return errors.New("invalid account ID format: invalid char found")

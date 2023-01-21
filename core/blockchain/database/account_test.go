@@ -28,7 +28,7 @@ func TestToAccountID(t *testing.T) {
 	// Ensures hexID has valid length
 	hexID = "0x0"
 	_, err = database.ToAccountID(hexID)
-	assert.EqualError(t, err, "invalid account ID format: length is too small")
+	assert.EqualError(t, err, "invalid account ID format: invalid length")
 
 	// Ensures hexID contains valid chars (first char after 0x)
 	hexID = "0xHee5ba68586c85880B0900D0dEe0eEcBB37010e0"
