@@ -93,10 +93,6 @@ func sendRun(_ *cobra.Command, _ []string) {
 		os.Exit(1)
 	}
 
-	if nonce < 0 {
-		nonce = defaultNonce
-	}
-
 	const chainID = 1
 	tx := database.Tx{
 		ChainID: chainID,
