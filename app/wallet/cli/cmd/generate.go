@@ -8,12 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const (
-	defaultAccountName = "private.ecdsa"
-	defaultAccountPath = "data/accounts"
-	keyExtension       = ".ecdsa"
-)
-
 var generateCmd = &cobra.Command{
 	Use:   "generate",
 	Short: "Generates new private key for the account",
@@ -21,18 +15,6 @@ var generateCmd = &cobra.Command{
 }
 
 func init() {
-	generateCmd.Flags().StringVarP(
-		&accountName,
-		"account-name", "a",
-		defaultAccountName,
-		"The name of the account.",
-	)
-	generateCmd.Flags().StringVarP(
-		&accountPath,
-		"account-path", "p",
-		defaultAccountPath,
-		"The path to the account private key.",
-	)
 	rootCmd.AddCommand(generateCmd)
 }
 

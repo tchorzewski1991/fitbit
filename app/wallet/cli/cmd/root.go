@@ -15,6 +15,26 @@ var (
 	accountPath string
 )
 
+const (
+	defaultAccountName = "private.ecdsa"
+	defaultAccountPath = "data/accounts"
+	defaultNonce       = 0
+	keyExtension       = ".ecdsa"
+)
+
+func init() {
+	rootCmd.PersistentFlags().StringVarP(&accountName,
+		"account-name", "a",
+		defaultAccountName,
+		"The name of the account.",
+	)
+	rootCmd.PersistentFlags().StringVarP(&accountPath,
+		"account-path", "p",
+		defaultAccountPath,
+		"The path to the account private key.",
+	)
+}
+
 var rootCmd = &cobra.Command{
 	Use:   "app",
 	Short: "FitbitCLI",

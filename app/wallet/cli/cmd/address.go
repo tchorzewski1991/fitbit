@@ -16,18 +16,6 @@ var addressCmd = &cobra.Command{
 }
 
 func init() {
-	addressCmd.Flags().StringVarP(
-		&accountName,
-		"account-name", "a",
-		defaultAccountName,
-		"The name of the account.",
-	)
-	addressCmd.Flags().StringVarP(
-		&accountPath,
-		"account-path", "p",
-		defaultAccountPath,
-		"The path to the account private key.",
-	)
 	rootCmd.AddCommand(addressCmd)
 }
 
