@@ -1,11 +1,12 @@
 package middleware
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/tchorzewski1991/fitbit/core/web"
 	"go.uber.org/zap"
-	"net/http"
-	"time"
 )
 
 // Logger is a gin compatible middleware function responsible for
@@ -23,7 +24,7 @@ func Logger(log *zap.SugaredLogger) gin.HandlerFunc {
 
 		c.Next()
 
-		fields := []interface{}{
+		fields := []any{
 			"method", c.Request.Method,
 			"path", c.Request.URL.Path,
 			"trace_id", v.TraceID,

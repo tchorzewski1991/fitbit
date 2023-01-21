@@ -3,13 +3,14 @@ package cmd
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/goccy/go-json"
 	"github.com/spf13/cobra"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
-	"io"
-	"net/http"
-	"os"
 )
 
 var (

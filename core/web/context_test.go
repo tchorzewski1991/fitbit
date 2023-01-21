@@ -2,9 +2,10 @@ package web_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/stretchr/testify/assert"
 	"github.com/tchorzewski1991/fitbit/core/web"
-	"testing"
 )
 
 func TestCtxValues(t *testing.T) {

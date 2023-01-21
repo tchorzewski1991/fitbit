@@ -1,10 +1,11 @@
 package middleware
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/tchorzewski1991/fitbit/core/web"
-	"time"
 )
 
 // CtxValues is a gin compatible middleware function responsible for
