@@ -30,7 +30,9 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	defer log.Sync() // nolint:errcheck
+	defer func() {
+		_ = log.Sync()
+	}()
 
 	if err = run(log); err != nil {
 		fmt.Println(err)
