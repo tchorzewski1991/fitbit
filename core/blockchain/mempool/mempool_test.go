@@ -36,7 +36,7 @@ func TestMempool(t *testing.T) {
 	// Run test
 
 	m := mempool.New()
-	assert.Equal(t, 0, m.Count())
+	assert.Equal(t, 0, m.Size())
 
 	err = m.Upsert(blockTx1)
 	assert.Nil(t, err)
@@ -49,10 +49,10 @@ func TestMempool(t *testing.T) {
 	err = m.Remove(blockTx1)
 	assert.Nil(t, err)
 
-	assert.Equal(t, 1, m.Count())
+	assert.Equal(t, 1, m.Size())
 
 	m.Truncate()
-	assert.Equal(t, 0, m.Count())
+	assert.Equal(t, 0, m.Size())
 }
 
 type blockTxArgs struct {

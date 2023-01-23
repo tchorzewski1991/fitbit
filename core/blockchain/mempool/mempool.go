@@ -20,8 +20,8 @@ func New() *Mempool {
 	}
 }
 
-// Count returns the current number of transactions in the Mempool.
-func (m *Mempool) Count() int {
+// Size returns the current number of transactions in the Mempool.
+func (m *Mempool) Size() int {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 	return len(m.pool)
