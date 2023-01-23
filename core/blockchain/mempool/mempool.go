@@ -28,7 +28,6 @@ func (m *Mempool) Size() int {
 }
 
 // Upsert adds a new transaction to Mempool.
-// TODO: Should we check err on key preparation step?
 func (m *Mempool) Upsert(tx database.BlockTx) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
@@ -41,7 +40,6 @@ func (m *Mempool) Upsert(tx database.BlockTx) error {
 }
 
 // Remove deletes a transaction from Mempool.
-// TODO: Should we check err on key preparation step?
 func (m *Mempool) Remove(tx database.BlockTx) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
