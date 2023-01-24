@@ -44,7 +44,12 @@ func TestMempool(t *testing.T) {
 	err = m.Upsert(blockTx2)
 	assert.Nil(t, err)
 
-	assert.Equal(t, 2, m.Count())
+	assert.Equal(t, 2, m.Size())
+
+	txs := m.Select(mempool.SelectAll())
+	assert.Equal(t, 2, len(txs))
+	assert.Equal(t, blockTx1.Timestamp, txs[0].Timestamp)
+	assert.Equal(t, blockTx2.Timestamp, txs[1].Timestamp)
 
 	err = m.Remove(blockTx1)
 	assert.Nil(t, err)

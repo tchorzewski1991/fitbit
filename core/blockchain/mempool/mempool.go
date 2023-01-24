@@ -51,15 +51,17 @@ func (m *Mempool) Remove(tx database.BlockTx) error {
 	return nil
 }
 
-// Get returns all transactions from Mempool.
-func (m *Mempool) Get() []database.BlockTx {
+// Select returns a copy of all transactions from Mempool.
+func (m *Mempool) Select(filter SelectFunc) []database.BlockTx {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
 	var txs []database.BlockTx
 
 	for _, tx := range m.pool {
-		txs = append(txs, tx)
+		if filter(tx) {
+			txs = append(txs, tx)
+		}
 	}
 
 	return txs
