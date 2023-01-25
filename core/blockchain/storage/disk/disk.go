@@ -83,6 +83,11 @@ func (d *Disk) Reset() error {
 	return os.MkdirAll(d.dataPath, 0755)
 }
 
+// Close is a no-op method required by database.Storage interface.
+func (d *Disk) Close() error {
+	return nil
+}
+
 func (d *Disk) filePath(blockHeight int) string {
 	return path.Join(d.dataPath, fmt.Sprintf("%d.json", blockHeight))
 }

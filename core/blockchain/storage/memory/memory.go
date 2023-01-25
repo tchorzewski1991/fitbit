@@ -52,3 +52,8 @@ func (m *Memory) Reset() error {
 	m.blocks = nil
 	return nil
 }
+
+// Close is a no-op method required by database.Storage interface.
+func (m *Memory) Close() error {
+	return nil
+}
