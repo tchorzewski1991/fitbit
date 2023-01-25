@@ -2,11 +2,12 @@ package nameservice
 
 import (
 	"errors"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"io/fs"
 	"path/filepath"
 	"strings"
+
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 )
 
 // NameService provides lookup functionality for
