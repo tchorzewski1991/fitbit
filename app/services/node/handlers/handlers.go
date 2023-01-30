@@ -6,12 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/tchorzewski1991/fitbit/app/services/node/handlers/middleware"
 	v1 "github.com/tchorzewski1991/fitbit/app/services/node/handlers/v1"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/state"
+	"github.com/tchorzewski1991/fitbit/core/nameservice"
 	"go.uber.org/zap"
 )
 
 // Config collects all dependencies required by either public or private handlers.
 type Config struct {
-	Log *zap.SugaredLogger
+	Log         *zap.SugaredLogger
+	State       *state.State
+	NameService *nameservice.NameService
 }
 
 // PublicMux constructs a new http.Handler and registers all public routes.
@@ -28,7 +32,9 @@ func PublicMux(cfg Config) http.Handler {
 	)
 
 	v1.PublicHandlers(mux, v1.Config{
-		Log: cfg.Log,
+		Log:         cfg.Log,
+		State:       cfg.State,
+		NameService: cfg.NameService,
 	})
 
 	return mux
