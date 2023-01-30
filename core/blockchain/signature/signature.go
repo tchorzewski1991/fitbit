@@ -150,6 +150,15 @@ func ToBytes(r, s, v *big.Int) ([]byte, error) {
 	return sig, nil
 }
 
+func ToBytesWithFitbitID(r, s, v *big.Int) ([]byte, error) {
+	bs, err := ToBytes(r, s, v)
+	if err != nil {
+		return nil, err
+	}
+	bs[64] = byte(v.Uint64())
+	return bs, nil
+}
+
 // FromBytes takes signature in []byte format and converts it to r, s, v format.
 func FromBytes(sig []byte) (r, s, v *big.Int, err error) {
 	if len(sig) < 64 {
