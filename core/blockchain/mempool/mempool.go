@@ -2,6 +2,7 @@ package mempool
 
 import (
 	"fmt"
+	"sort"
 	"sync"
 
 	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
@@ -63,6 +64,8 @@ func (m *Mempool) Select(filter SelectFunc) []database.BlockTx {
 			txs = append(txs, tx)
 		}
 	}
+
+	sort.Sort(byNonce(txs))
 
 	return txs
 }

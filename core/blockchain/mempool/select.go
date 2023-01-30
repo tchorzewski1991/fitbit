@@ -21,3 +21,18 @@ var SelectByAccount = func(accountID database.AccountID) SelectFunc {
 		return true
 	}
 }
+
+// byNonce provides sorting support by the transaction nonce value.
+type byNonce []database.BlockTx
+
+func (bn byNonce) Len() int {
+	return len(bn)
+}
+
+func (bn byNonce) Less(i, j int) bool {
+	return bn[i].Nonce < bn[j].Nonce
+}
+
+func (bn byNonce) Swap(i, j int) {
+	bn[i], bn[j] = bn[j], bn[i]
+}
