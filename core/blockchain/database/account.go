@@ -84,3 +84,18 @@ func hasProperChars(hexID string) bool {
 func isHexChar(b byte) bool {
 	return ('0' <= b && b <= '9') || ('a' <= b && b <= 'f') || ('A' <= b && b <= 'F')
 }
+
+// byAccountID allows for sorting a collection of Account(s) by their IDs.
+type byAccountID []Account
+
+func (s byAccountID) Len() int {
+	return len(s)
+}
+
+func (s byAccountID) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s byAccountID) Less(i, j int) bool {
+	return s[i].ID < s[j].ID
+}
