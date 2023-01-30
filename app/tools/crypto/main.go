@@ -23,7 +23,7 @@ func main() {
 	//}
 
 	// Load ecdsa private key from disk
-	priv, err := crypto.LoadECDSA("app/tools/crypto/test.ecdsa")
+	priv, err := crypto.LoadECDSA("data/accounts/test.ecdsa")
 	if err != nil {
 		log.Fatal(err)
 	}
