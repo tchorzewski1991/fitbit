@@ -2,15 +2,15 @@ package private
 
 import (
 	"fmt"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/network"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/state"
-	"github.com/tchorzewski1991/fitbit/core/web"
 	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/network"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/state"
+	"github.com/tchorzewski1991/fitbit/core/web"
 	"go.uber.org/zap"
 )
 

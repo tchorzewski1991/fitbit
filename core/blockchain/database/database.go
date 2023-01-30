@@ -3,11 +3,11 @@ package database
 import (
 	"errors"
 	"fmt"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/signature"
 	"sort"
 	"sync"
 
 	"github.com/tchorzewski1991/fitbit/core/blockchain/genesis"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/signature"
 )
 
 type Storage interface {

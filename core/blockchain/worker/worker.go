@@ -3,10 +3,10 @@ package worker
 import (
 	"context"
 	"errors"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"sync"
 	"time"
 
+	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/state"
 )
 

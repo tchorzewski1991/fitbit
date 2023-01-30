@@ -1,13 +1,13 @@
 package database_test
 
 import (
-	"github.com/tchorzewski1991/fitbit/core/blockchain/storage/memory"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/genesis"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/storage/memory"
 )
 
 func TestDatabase_Reset(t *testing.T) {

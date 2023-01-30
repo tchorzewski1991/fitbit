@@ -2,12 +2,12 @@ package state
 
 import (
 	"context"
-	"github.com/tchorzewski1991/fitbit/core/blockchain/network"
 	"sync"
 
 	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/genesis"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/mempool"
+	"github.com/tchorzewski1991/fitbit/core/blockchain/network"
 )
 
 const oneUnitOfGas = 1

@@ -3,11 +3,12 @@ package state
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"net/http"
+
 	"github.com/goccy/go-json"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/database"
 	"github.com/tchorzewski1991/fitbit/core/blockchain/network"
-	"io"
-	"net/http"
 )
 
 // RequestPeerStatus sends HTTP request to the given peer for the status info.
