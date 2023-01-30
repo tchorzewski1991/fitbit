@@ -38,8 +38,15 @@ func PublicHandlers(mux *gin.Engine, cfg Config) {
 // PrivateHandlers registers all v1 private routes.
 func PrivateHandlers(mux *gin.Engine, cfg Config) {
 	h := private.Handlers{
-		Log: cfg.Log,
+		Log:   cfg.Log,
+		State: cfg.State,
 	}
 	v1 := mux.Group("/" + version)
 	v1.GET("/health", h.Health)
+	v1.GET("/node/status", h.Status)
+	v1.GET("/node/blocks/:from/:to", h.BlocksByHeight)
+	v1.GET("/node/tx/uncommited", h.UncommittedTx)
+	v1.POST("/node/block", h.SubmitBlock)
+	v1.POST("/node/peer", h.SubmitPeer)
+	v1.POST("/node/tx", h.SubmitTx)
 }

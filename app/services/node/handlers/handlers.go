@@ -54,7 +54,8 @@ func PrivateMux(cfg Config) http.Handler {
 	)
 
 	v1.PrivateHandlers(mux, v1.Config{
-		Log: cfg.Log,
+		Log:   cfg.Log,
+		State: cfg.State,
 	})
 
 	return mux
