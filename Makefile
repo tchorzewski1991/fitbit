@@ -6,6 +6,13 @@ build:
 run:
 	@go run ./app/services/node/main.go
 
+run2:
+	@go run ./app/services/node/main.go \
+		--node-public-host 0.0.0.0:3001 \
+		--node-private-host 0.0.0.0:4001 \
+		--state-beneficiary rxtx \
+		--state-data-path data/miner2
+
 tidy:
 	@go mod tidy
 	@go mod verify
