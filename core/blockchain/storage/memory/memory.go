@@ -20,11 +20,11 @@ func New() (*Memory, error) {
 }
 
 // Write writes the database.BlockData to memory protecting the order of blocks based on given height.
-func (m *Memory) Write(height int, data database.BlockData) error {
+func (m *Memory) Write(height uint64, data database.BlockData) error {
 	m.mu.Lock()
 	defer m.mu.Unlock()
 
-	if height != len(m.blocks)+1 {
+	if int(height) != len(m.blocks)+1 {
 		return fmt.Errorf("cannot write block with height: %d to the chain of len: %d", height, len(m.blocks))
 	}
 
@@ -34,11 +34,11 @@ func (m *Memory) Write(height int, data database.BlockData) error {
 }
 
 // Read reads the database.BlockData from memory by given height.
-func (m *Memory) Read(height int) (*database.BlockData, error) {
+func (m *Memory) Read(height uint64) (*database.BlockData, error) {
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 
-	if height == 0 || height > len(m.blocks) {
+	if height == 0 || int(height) > len(m.blocks) {
 		return nil, fmt.Errorf("cannot read block with height: %d from the chain of len: %d", height, len(m.blocks))
 	}
 

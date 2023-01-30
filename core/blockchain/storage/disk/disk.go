@@ -28,7 +28,7 @@ func New(dataPath string) (*Disk, error) {
 // Write writes the database.BlockData on the disk in a JSON file named by given height.
 // JSON file format is the subject to change in the future, and it is the only supported
 // data serialization strategy atm.
-func (d *Disk) Write(height int, data database.BlockData) error {
+func (d *Disk) Write(height uint64, data database.BlockData) error {
 
 	// Marshall data into JSON.
 	bs, err := json.MarshalIndent(data, "", " ")
@@ -55,7 +55,7 @@ func (d *Disk) Write(height int, data database.BlockData) error {
 // Read reads the JSON file named by given height and decodes it into database.BlockData.
 // JSON file format is the subject to change in the future, and it is the only supported
 // data serialization strategy atm.
-func (d *Disk) Read(height int) (*database.BlockData, error) {
+func (d *Disk) Read(height uint64) (*database.BlockData, error) {
 
 	// Open a JSON file named by given height.
 	f, err := os.OpenFile(d.filePath(height), os.O_RDONLY, 0600)
@@ -88,6 +88,6 @@ func (d *Disk) Close() error {
 	return nil
 }
 
-func (d *Disk) filePath(blockHeight int) string {
+func (d *Disk) filePath(blockHeight uint64) string {
 	return path.Join(d.dataPath, fmt.Sprintf("%d.json", blockHeight))
 }
