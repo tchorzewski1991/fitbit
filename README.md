@@ -33,8 +33,9 @@ In order to make sure your environment is setup properly run the following comma
 go version
 ```
 
-If you don't have your local instalation of Go follow the installation guide from: https://go.dev
-## Run locally
+If you don't have your local installation of Go follow the installation guide from: https://go.dev
+
+## Running the Project
 
 Clone the project
 
@@ -54,17 +55,71 @@ Install dependencies
 make tidy
 ```
 
-Build the node
-
-```bash
-make build
-```
-
-Start the node
+Start the primary node with:
 
 ```bash
 ./fitbit
 ```
+
+Start the second node with:
+
+```bash
+make run-miner-node
+```
+
+From technical point of view node is a device that is connected to the blockchain network
+and participates in the consensus process. In the production ready blockchains there are
+different types on nodes with a very specific roles, like mining, validation, etc.
+
+Fitbit blockchain does not define different types of nodes, so every node we run is just
+a full node with complete copy of the blockchain ledger. This node validates transactions
+before they are added to the blockchain.
+
+We are not restricted to run 2 nodes. We can run as many nodes as we want.
+The previous command is just a shortcut for the `go run` which starts a new
+node:
+
+```bash
+go run ./app/services/node/main.go
+```
+
+Starting the node requires however a bit of configuration.
+
+The following table describes the full set of flags available while setting up the node:
+
+| Flag                    | Description                                                                   | Default       | Required |
+|-------------------------|-------------------------------------------------------------------------------|---------------|----------|
+| --node-public-host      | Host address of the public API                                                | 0.0.0.0:3000  | true     |
+| --node-private-host     | Host address of the private API                                               | 0.0.0.0:4000  | true     |
+| --node-read-timeout     | -                                                                             | 5s            | false    |
+| --node-write-timeout    | -                                                                             | 5s            | false    |
+| --node-idle-timeout     | -                                                                             | 5s            | false    |
+| --node-shutdown-timeout | -                                                                             | 5s            | false    |
+| --state-accounts-path   | Path to the location where all account <br/>private keys will be stored.      | data/accounts | false    |
+| --state-data-path       | Path to the location where all mined <br/>blocks will be stored.              | data/miner    | false    |
+| --state-beneficiary     | Beneficiary is the owner of the node. <br/>Account which gains mining reward. | miner         | false    |
+| --state-origin-peers    | The origin node we need to <br/>connect to make initial sync.                 | 0.0.0.0:4000  | false    |
+
+To initialize third node we need to run the following command:
+
+```bash
+go run ./app/services/node/main.go \
+    --node-public-host 0.0.0.0:3002 \
+    --node-private-host 0.0.0.0:4002 \
+    --state-beneficiary <replace-with-beneficiary-name>.ecdsa \
+    --state-data-path data/<replace-with-beneficiary-data-name>
+```
+
+This project is shipped with the minimalistic wallet CLI. To generate a new account (public - private
+key pair) run the following command:
+
+```bash
+go run ./app/wallet/cli/main.go generate --account-name Babajaga --account-path data/accounts
+```
+
+Running this command will generate a new ECDSA private key under `data/accounts` path.
+
+TODO: continue from here
 
 Shutdown the node
 

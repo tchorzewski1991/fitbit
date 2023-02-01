@@ -3,10 +3,10 @@ APP=fitbit
 build:
 	@go build -o $(APP) -ldflags '-X main.build=local' ./app/services/node/main.go
 
-run:
+run-primary:
 	@go run ./app/services/node/main.go
 
-run2:
+run-second-node:
 	@go run ./app/services/node/main.go \
 		--node-public-host 0.0.0.0:3001 \
 		--node-private-host 0.0.0.0:4001 \

@@ -65,7 +65,7 @@ func run(log *zap.SugaredLogger) error {
 		State struct {
 			AccountsPath string   `conf:"default:data/accounts"`
 			DataPath     string   `conf:"default:data/miner"`
-			Beneficiary  string   `conf:"default:test"`
+			Beneficiary  string   `conf:"default:miner"`
 			OriginPeers  []string `conf:"default:0.0.0.0:4000"`
 		}
 	}{
