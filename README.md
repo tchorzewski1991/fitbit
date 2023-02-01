@@ -58,7 +58,7 @@ make tidy
 Start the primary node with:
 
 ```bash
-./fitbit
+make run-primary-node
 ```
 
 Start the second node with:
