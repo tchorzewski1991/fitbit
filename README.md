@@ -100,26 +100,49 @@ The following table describes the full set of flags available while setting up t
 | --state-beneficiary     | Beneficiary is the owner of the node. <br/>Account which gains mining reward. | miner         | false    |
 | --state-origin-peers    | The origin node we need to <br/>connect to make initial sync.                 | 0.0.0.0:4000  | false    |
 
+Although program won't stop you, consider the fact you will need a new set of
+public - private key pair (a.k.a. Account) for the third beneficiary.
+
+This project is shipped with the minimalistic wallet CLI which gets you covered.
+To generate a new Account (public - private key pair) run the following command:
+
+```bash
+go run ./app/wallet/cli/main.go generate --account-name babajaga --account-path data/accounts
+```
+
+Running this command will generate a new ECDSA private key under `data/accounts/babajaga.ecdsa` path.
+
 To initialize third node we need to run the following command:
 
 ```bash
 go run ./app/services/node/main.go \
     --node-public-host 0.0.0.0:3002 \
     --node-private-host 0.0.0.0:4002 \
-    --state-beneficiary <replace-with-beneficiary-name>.ecdsa \
-    --state-data-path data/<replace-with-beneficiary-data-name>
+    --state-beneficiary babajaga.ecdsa \
+    --state-data-path data/babajaga
 ```
 
-This project is shipped with the minimalistic wallet CLI. To generate a new account (public - private
-key pair) run the following command:
+We are running currently a small p2p network of 3 independent nodes:
+
+| Name          | Ports                                                  |
+|---------------|--------------------------------------------------------|
+| Primary node  | Public API: 0.0.0.0:3000<br/>Private API: 0.0.0.0:4000 |
+| Miner node    | Public API: 0.0.0.0:3001<br/>Private API: 0.0.0.0:4001 |
+| Babajaga node | Public API: 0.0.0.0:3002<br/>Private API: 0.0.0.0:4002 |
+
+Fitbit blockchain is not fully decentralized environment. Every new node needs
+to sync-up with the chain on startup which basically means we need to point to
+at least one origin-node. Our current setup leverages only one origin-node
+which is a primary node. This setting is shipped by default, but can be
+overwritten by using `--state-origin-peers` configuration flag.
+
+To start the mining competition we need a transaction.
+
+Fitbit wallet CLI provides a simple interface for sending new transactions:
 
 ```bash
-go run ./app/wallet/cli/main.go generate --account-name Babajaga --account-path data/accounts
+TODO
 ```
-
-Running this command will generate a new ECDSA private key under `data/accounts` path.
-
-TODO: continue from here
 
 Shutdown the node
 
