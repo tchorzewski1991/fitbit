@@ -14,14 +14,34 @@ my first exposure to it I want to actively learn and explore its applications in
 
 Why Fitbit? Regardless of being a passionate about software development I am also a huge advocate of any
 kind of sport activities - especially running. I thought one day - how cool would it be to write a project
-that will transform data from my running activites to digital tokens which ... I will be able to store later
-on my own, private blockchain. Despite the fact this project hasn't got any business value I can see the time
-spent on it as a great opportunity to explore new technologies while keeping the right balance of complexity
-that blockchain technology brings to the table.
+that will transform data from my running activities to digital tokens which ... I will be able to store and
+use later on my own, private blockchain. Despite the fact this project hasn't got any business value I can
+see the time spent on it as a great opportunity to explore new technologies while keeping the right balance
+of complexity that blockchain technology brings to the table.
 
-## Features
+## Functionalities 
 
-- TODO
+- Node
+  - Public API
+    - Provides info about genesis file
+    - Provides list of account balances
+    - Provides balance of specific account
+    - Provides list of uncommited transactions
+    - Provides uncommited transactions of specific account
+    - Handles submission of wallet transactions
+  - Private API
+    - Provides list of known peers
+    - Provides list of blocks by height
+    - Provides list of uncommited transactions
+    - Handles submission and sync of new peer
+    - Handles submission and sync of transactions
+    - Handles submission and sync of new block proposal
+- CLI Wallet
+  - Provides ability to generate new account
+  - Provides ability to generate public address of account
+  - Handles submission of wallet transactions
+- Chrome Wallet
+  - In progress
 
 ## Prerequisites
 
@@ -95,10 +115,15 @@ The following table describes the full set of flags available while setting up t
 | --node-write-timeout    | -                                                                             | 5s            | false    |
 | --node-idle-timeout     | -                                                                             | 5s            | false    |
 | --node-shutdown-timeout | -                                                                             | 5s            | false    |
-| --state-accounts-path   | Path to the location where all account <br/>private keys will be stored.      | data/accounts | false    |
-| --state-data-path       | Path to the location where all mined <br/>blocks will be stored.              | data/miner    | false    |
+| --state-accounts-path   | Path to the location where all account <br/>private keys will be stored. (*)  | data/accounts | false    |
+| --state-data-path       | Path to the location where all mined <br/>blocks will be stored.         (*)  | data/miner    | false    |
 | --state-beneficiary     | Beneficiary is the owner of the node. <br/>Account which gains mining reward. | miner         | false    |
 | --state-origin-peers    | The origin node we need to <br/>connect to make initial sync.                 | 0.0.0.0:4000  | false    |
+
+Just a quick note on '*'-ed descriptions above. I am perfectly aware of the flaws of this architectural decisions
+and this is not the shape of the project we want to ship to production. Nevertheless, for reference implementation
+it is just enough. Thanks to the simple implementation of JSON file based storage we got a noticeable advantage
+of quick feedback loop.
 
 Although program won't stop you, consider the fact you will need a new set of
 public - private key pair (a.k.a. Account) for the third beneficiary.
@@ -130,15 +155,15 @@ We are running currently a small p2p network of 3 independent nodes:
 | Miner node    | Public API: 0.0.0.0:3001<br/>Private API: 0.0.0.0:4001 |
 | Babajaga node | Public API: 0.0.0.0:3002<br/>Private API: 0.0.0.0:4002 |
 
-Fitbit blockchain is not fully decentralized environment. Every new node needs
-to sync-up with the chain on startup which basically means we need to point to
-at least one origin-node. Our current setup leverages only one origin-node
-which is a primary node. This setting is shipped by default, but can be
-overwritten by using `--state-origin-peers` configuration flag.
+Fitbit blockchain does not support fully decentralized environment. Every new node needs
+to sync-up with the chain on startup, which basically means we need to point to at least 
+one origin-node. Current setup leverages only one origin-node which is a primary node.
+This setting is shipped by default, but can be  overwritten by using `--state-origin-peers` 
+configuration flag.
 
-To start the mining competition we need a transaction.
+To start the mining competition a new transaction has to be sent to at least 1 out of 3 running nodes.
 
-Fitbit wallet CLI provides a simple interface for sending new transactions:
+Fitbit wallet CLI provides a simple interface for sending transaction:
 
 ```bash
 TODO
