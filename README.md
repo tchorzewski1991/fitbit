@@ -163,11 +163,48 @@ configuration flag.
 
 To start the mining competition a new transaction has to be sent to at least 1 out of 3 running nodes.
 
-Fitbit wallet CLI provides a simple interface for sending transaction:
+Fitbit wallet CLI provides a simple interface for sending transactions:
 
 ```bash
-TODO
+go run ./app/wallet/cli/main.go send --help
 ```
+
+```
+Sends a new transaction
+
+Usage:
+  app send [flags]
+
+Flags:
+  -d, --data bytesHex   Transaction data to send.
+  -n, --nonce uint      Transaction number.
+  -c, --tip uint        Transaction tip to add.
+  -t, --to string       The receiver of the transaction.
+  -u, --url string      The url of the public node. (default "http://localhost:3000")
+  -v, --value uint      Transaction value to send.
+
+Global Flags:
+  -a, --account-name string   The name of the account. (default "private.ecdsa")
+  -p, --account-path string   The path to the account private key. (default "data/accounts")
+```
+
+Example command for sending transaction:
+
+```bash
+go run ./app/wallet/cli/main.go send \
+  --account-name miner \
+  --to 0xDBE46a0b3BF1543c9FD7e4BFbD1a054406b62D7d \
+  --nonce 1 \
+  --value 100 \
+  --tip 10
+```
+
+The command above will send one new transaction between **miner** and account identified by public 
+address **0xDBE46a0b3BF1543c9FD7e4BFbD1a054406b62D7d**. Before transaction will be sent to node's public API 
+it will be cryptographically signed by the private key owned by **miner**. Keep in mind that public address 
+of the transaction sender does not need to be provided explicitly as it can be derived from the sender's private key.
+This is why wallet cli uses the name of the account as one of its parameters to `send` command  instead of 
+explicit `--from` flag.
 
 Shutdown the node
 
@@ -183,9 +220,7 @@ make clean
 
 ## How it works?
 
-TODO: Describe
-
-By default running node should expose following http ports...
+TODO
 
 ## Run tests
 
