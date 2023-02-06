@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/gin-contrib/cors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,6 +30,7 @@ func PublicMux(cfg Config) http.Handler {
 		middleware.CtxValues(),
 		middleware.Logger(cfg.Log),
 		middleware.Errors(),
+		cors.Default(),
 	)
 
 	v1.PublicHandlers(mux, v1.Config{

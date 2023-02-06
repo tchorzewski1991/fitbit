@@ -6,6 +6,7 @@ require (
 	github.com/ardanlabs/blockchain v0.0.0-20221209193711-17bc13e28e06
 	github.com/ardanlabs/conf/v3 v3.1.3
 	github.com/ethereum/go-ethereum v1.10.26
+	github.com/gin-contrib/cors v1.4.0
 	github.com/gin-gonic/gin v1.8.2
 	github.com/goccy/go-json v0.10.0
 	github.com/google/uuid v1.3.0
