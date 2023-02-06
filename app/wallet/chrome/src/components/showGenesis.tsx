@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Genesis} from "../types/Genesis";
+import {Genesis} from "../api/Types";
 import axios from "axios";
 
 export default function ShowGenesis(){

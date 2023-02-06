@@ -8,3 +8,12 @@ export type Genesis = {
         [account: string]: number
     };
 }
+
+export type Account = {
+    id: string;
+    name: string;
+    nonce: number;
+    balance: number;
+}
+
+export type Accounts = Array<Account>
