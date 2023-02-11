@@ -2,22 +2,10 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/tchorzewski1991/fitbit)](https://goreportcard.com/report/github.com/tchorzewski1991/fitbit)
 
-This project is a reference blockchain implementation that was built for educational purpose.
-Although feature rich this project should not be considered production ready as there is still
-much to work on.
-
-Blockchain has gained some momentum recently. As I have been fascinated by this technology since
-my first exposure to it I want to actively learn and explore its applications in various industries.
-
-
-## A bit of a context
-
-Why Fitbit? Regardless of being a passionate about software development I am also a huge advocate of any
-kind of sport activities - especially running. I thought one day - how cool would it be to write a project
-that will transform data from my running activities to digital tokens which ... I will be able to store and
-use later on my own, private blockchain. Despite the fact this project hasn't got any business value I can
-see the time spent on it as a great opportunity to explore new technologies while keeping the right balance
-of complexity that blockchain technology brings to the table.
+This project is a reference blockchain implementation that was built for educational purpose. 
+The general idea for this project is to leverage the blockchain technology to build decentralized 
+ledger of sport activities transformed into digital form. Although feature rich this project should 
+not be considered production ready as there is still much to work on.
 
 ## Functionalities 
 
@@ -91,21 +79,19 @@ From technical point of view node is a device that is connected to the blockchai
 and participates in the consensus process. In the production ready blockchains there are
 different types on nodes with a very specific roles, like mining, validation, etc.
 
-Fitbit blockchain does not define different types of nodes, so every node we run is just
+Fitbit blockchain does not define different types of nodes, so every running node is just
 a full node with complete copy of the blockchain ledger. This node validates transactions
 before they are added to the blockchain.
 
-We are not restricted to run 2 nodes. We can run as many nodes as we want.
-The previous command is just a shortcut for the `go run` which starts a new
-node:
+There is no restriction for the number of running nodes. The previous command is just a 
+shortcut for the `go run` which starts a new  node:
 
 ```bash
 go run ./app/services/node/main.go
 ```
 
-Starting the node requires however a bit of configuration.
-
-The following table describes the full set of flags available while setting up the node:
+Starting the node requires however a bit of configuration. The following table describes the 
+full set of flags available while setting up the node:
 
 | Flag                    | Description                                                                   | Default       | Required |
 |-------------------------|-------------------------------------------------------------------------------|---------------|----------|
@@ -120,16 +106,16 @@ The following table describes the full set of flags available while setting up t
 | --state-beneficiary     | Beneficiary is the owner of the node. <br/>Account which gains mining reward. | miner         | false    |
 | --state-origin-peers    | The origin node we need to <br/>connect to make initial sync.                 | 0.0.0.0:4000  | false    |
 
-Just a quick note on '*'-ed descriptions above. I am perfectly aware of the flaws of this architectural decisions
-and this is not the shape of the project we want to ship to production. Nevertheless, for reference implementation
-it is just enough. Thanks to the simple implementation of JSON file based storage we got a noticeable advantage
-of quick feedback loop.
 
-Although program won't stop you, consider the fact you will need a new set of
-public - private key pair (a.k.a. Account) for the third beneficiary.
+A quick note on `--state-accounts-path` and `--state--data-path`.
+This project does not represent production ready blockchain, and it is perfectly fine to store data 
+on local disk. Due to complexity that blockchain technology brings to the table this approach 
+is highly valuable in terms of quicker understanding of blockchain internals. Thanks to the simple 
+implementation of JSON file based storage we got a noticeable advantage of quick feedback loop.
 
-This project is shipped with the minimalistic wallet CLI which gets you covered.
-To generate a new Account (public - private key pair) run the following command:
+Every running node expects to have owner - the beneficiary account. Account is nothing more than 
+a new set of public - private key pair. This project is shipped with the minimalistic wallet CLI 
+which gets you covered. To generate a new Account (public - private key pair) run the following command:
 
 ```bash
 go run ./app/wallet/cli/main.go generate --account-name babajaga --account-path data/accounts
@@ -137,7 +123,7 @@ go run ./app/wallet/cli/main.go generate --account-name babajaga --account-path 
 
 Running this command will generate a new ECDSA private key under `data/accounts/babajaga.ecdsa` path.
 
-To initialize third node we need to run the following command:
+To initialize babajaga's node run the following command:
 
 ```bash
 go run ./app/services/node/main.go \
@@ -156,9 +142,9 @@ We are running currently a small p2p network of 3 independent nodes:
 | Babajaga node | Public API: 0.0.0.0:3002<br/>Private API: 0.0.0.0:4002 |
 
 Fitbit blockchain does not support fully decentralized environment. Every new node needs
-to sync-up with the chain on startup, which basically means we need to point to at least 
+to sync-up with the chain on startup, which basically means it needs to be pointed to at least 
 one origin-node. Current setup leverages only one origin-node which is a primary node.
-This setting is shipped by default, but can be  overwritten by using `--state-origin-peers` 
+This setting is shipped by default, but can be overwritten by using `--state-origin-peers` 
 configuration flag.
 
 To start the mining competition a new transaction has to be sent to at least 1 out of 3 running nodes.
@@ -217,10 +203,6 @@ Clean up project directory
 ```bash
 make clean
 ```
-
-## How it works?
-
-TODO
 
 ## Run tests
 
